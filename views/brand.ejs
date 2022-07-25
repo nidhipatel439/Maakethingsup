@@ -4,8 +4,7 @@
     <div class="container">
         <%- include('./partials/filter'); %>
         <div class="my-5">
-            <h2 class="text-uppercase text-center">Listing <%= title %></h2>
-            <p class="text-center">Brand: <%= title %></p>
+            <h2 class="text-uppercase text-center">Showing all products from <%= title %></h2>
             <div class="d-flex flex-wrap my-5">
                 <% for(var i=0; i < data.length; i++) { %>
                     <div class="card border-0 shadow pb-3 my-2" style="width: 16rem">

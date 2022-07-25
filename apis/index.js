@@ -7,7 +7,7 @@ const makeupApi = axios.create({
     baseURL: "http://makeup-api.herokuapp.com/api/v1"
 })
 
-const forExApi = axios.create({
+const forexApi = axios.create({
     baseURL: "https://api.exchangerate.host",
 
 })
@@ -19,7 +19,10 @@ const valid = (val) => {
     return true;
 }
 
-const getBrandList = async () => {
+/**
+ * The function to fetch the static data from makeup api and store them into staticData.json file in the root dir
+ */
+const getStaticData = async () => {
     console.log("Fetch static data");
     const response = await makeupApi.get(`/products.json`);
     const staticData = { uniqueBrands: [...new Set(response.data.map(each => each.brand))].filter((x) => x !== null), uniqueProductTypes: [...new Set(response.data.map(each => each.product_type))].filter((x) => x !== null) };
@@ -30,11 +33,30 @@ const getBrandList = async () => {
 
 }
 
+/**
+ * This function takes the currency code (i.e. AUD, EUR, CAD, etc.) and returns the foreign exchange rate with respect to USD
+ * @param {string} currency 
+ * @returns {number} rate of foreign exchange with USD
+ */
+const getForexRate = async (currency) => {
+    if (!currency) return 1;
+    const response = await forexApi.get(`/convert?from=USD&to=${currency}`);
+    return response.data.info.rate;
+}
 
 
+/**
+ * 
+ * @param {string} currency 
+ * @param {string} brand 
+ * @param {'low to high' | 'high to low'} sortBy 
+ * @param {string} productType 
+ * @returns {any[]}  Array of object containing product information
+ * 
+ */
 const getMakeupApi = async (currency, brand, sortBy, productType) => {
     const response = await makeupApi.get('/products.json', (valid(brand) && !valid(productType)) ? { params: { brand: brand } } : (!valid(brand) && valid(productType)) ? { params: { product_type: productType } } : (valid(brand) && valid(productType)) ? { params: { brand: brand, product_type: productType } } : {});
-    const rate = await getForExApi(currency);
+    const rate = await getForexRate(currency);
     const filterNonZeroPrice = (val) => val.price !== 0;
     const nonZeroPriceProducts = response.data.map(each => ({ ...each, price: (each.price * rate) })).filter(filterNonZeroPrice);
     (sortBy === "low to high") ? nonZeroPriceProducts.sort((a, b) => a.price - b.price) : (sortBy === "high to low") ? nonZeroPriceProducts.sort((a, b) => b.price - a.price) : nonZeroPriceProducts;
@@ -42,10 +64,6 @@ const getMakeupApi = async (currency, brand, sortBy, productType) => {
     return data;
 }
 
-const getForExApi = async (currency) => {
-    if (!currency) return 1;
-    const response = await forExApi.get(`/convert?from=USD&to=${currency}`);
-    return response.data.info.rate;
-}
 
-module.exports = { getMakeupApi, getForExApi, valid, getBrandList, makeupApi };
+
+module.exports = { getMakeupApi, valid, getStaticData, makeupApi };
