@@ -1,0 +1,47 @@
+<%- include('./partials/header'); %>
+<%- include('./partials/banner');  %> 
+<main id="main">
+    <div class="container">
+        <%- include('./partials/filter'); %>
+        <div class="my-5">
+            <h2 class="text-uppercase text-center">Listing <%= title %></h2>
+            <p class="text-center">Brand: <%= title %></p>
+            <div class="d-flex flex-wrap my-5">
+                <% for(var i=0; i < data.length; i++) { %>
+                    <div class="card border-0 shadow pb-3 my-2" style="width: 16rem">
+                        <img src="<%= data[i].api_featured_image %>" class="card-img-top" alt="<%= data[i].name %>">
+                        <div class="card-body">
+                            <% if (data[i].tag_list.length > 0) { for(var j=0; j < data[i].tag_list.length; j++) {  if (j < 3) {%>
+                                <span class="badge bg-secondary my-1"><%= data[i].tag_list[j] %></span>
+                            <% } }}   %>    
+                            <a href="/brand/<%= data[i].brand %>" class="text-secondary text-uppercase text-decoration-none d-block my-2" data-bs-toggle="tooltip" data-bs-placement="top" title="See more products from <%= data[i].brand %>"><%= data[i].brand %></a>
+                            <p class="card-title"><%= data[i].name %></p>
+                            <h6 class="my-2">Category:
+                                <a href="/productType/<%= data[i].product_type %>" class="badge bg-warning text-decoration-none" data-bs-toggle="tooltip" data-bs-placement="top" title="See more <%= data[i].product_type %>"><%= data[i].product_type %></a>
+                            </h6>
+                            <p class="card-text"><%= data[i].price %></p>
+                        </div>
+                        <div class="card-footer border-0 bg-white text-center">
+                            <a href="<%= data[i].website_link %>" target="_blank" class="btn btn-dark">Go to website</a>
+                        </div>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</main>
+<%- include('./partials/footer'); %>
+
+
+<!-- background-image: https://ld-wp73.template-help.com/woocommerce/prod_16812/v2/wp-content/uploads/2020/02/smart-slide01.jpg -->
+<!-- face makeup: https://ld-wp73.template-help.com/woocommerce/prod_16812/v2/wp-content/uploads/2020/02/banner01.png -->
+<!-- eye makeup: https://ld-wp73.template-help.com/woocommerce/prod_16812/v2/wp-content/uploads/2020/02/banner02.png -->
+<!-- lip makeup: https://ld-wp73.template-help.com/woocommerce/prod_16812/v2/wp-content/uploads/2020/02/banner03.png  -->
+<!-- giftset makeup kit: https://ld-wp73.template-help.com/woocommerce/prod_16812/v2/wp-content/uploads/2020/02/banner04.png -->
+<!-- maskara: https://ld-wp73.template-help.com/woocommerce/prod_16812/v2/wp-content/uploads/2018/01/Volumizing-eyebrow-mascara-400x400.png -->
+<!-- concealer: https://ld-wp73.template-help.com/woocommerce/prod_16812/v2/wp-content/uploads/2018/01/Eye-reviving-dark-circle-concealer-beige-chair-400x400.png -->
+<!-- eyeliner: https://ld-wp73.template-help.com/woocommerce/prod_16812/v2/wp-content/uploads/2018/01/Long-wear-cream-eyeliner-noir-400x400.png -->
+<!-- foundation: https://ld-wp73.template-help.com/woocommerce/prod_16812/v2/wp-content/uploads/2018/01/Fluid-foundation-400x400.png -->
+
+
+

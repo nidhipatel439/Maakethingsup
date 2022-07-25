@@ -1,0 +1,62 @@
+<div class=" p-3 my-5 border border-3">
+    <div class="row align-items-end">
+        <div class="col-11">
+            <form class="row align-items-end" method="post" action="/filter">
+                <input  hidden name="target_url" value="<%= originUrl %>">
+            
+                    <div class="col-3">
+                        <label class="form-label" for="brand">Select brand:</label>
+                    <select class="form-select" name="selectedBrand" id="brand" <% if (originUrl.split('/')[1] == 'brand') { %> disabled <% } %>>
+                        <option default disabled hidden value selected>Choose brand</option>
+                        <% for(var i=0;i<brandList.length;i++) { %>
+                            <option value="<%= brandList[i] %>" <%  if(selectedBrand == brandList[i]){ %>selected <% } %>><%= brandList[i] %></option>
+                            <%} %>
+                        </select>
+                    </div>
+            
+                <div class="col-3  ">
+                    <label class="form-label" for="productType">Select product type:</label>
+                    <select class="form-select" name="selectedProductType" id="productType" <% if(originUrl.split('/')[1]=='productType'){ %> disabled <% } %> >
+                        <option value selected disabled hidden default>Choose product type</option>
+                        <% for(var i=0;i<productList.length;i++) { %>
+                        <option value="<%= productList[i] %>" <%  if(selectedProductType == productList[i]){ %>selected <% } %>><%= productList[i] %></option>
+                        <%} %>
+                    </select>
+                </div>
+                <div class="col-3  ">
+                    <label class="form-label"  for="currency">Select currency:</label>
+                    <select class="form-select" id="currency" name="selectedCurrency">
+                        <option value default disabled hidden >Choose currency</option>
+                        <option value="CAD" <%  if(selectedCurrency == "CAD"){ %>selected <% } 
+                            %> >CAD</option>
+                        <option value="USD" <%  if(selectedCurrency == "USD"){ %>selected <% } 
+                            %>>USD</option>
+                        <option value="EUR" <%  if(selectedCurrency == "EUR"){ %>selected <% } 
+                            %>>EUR</option>
+                        <option value="INR" <%  if(selectedCurrency == "INR"){ %>selected <% } 
+                            %>>INR</option>
+                        <option value="AUD" <%  if(selectedCurrency == "AUD"){ %>selected <% } 
+                            %>>AUD</option>
+                    </select>
+                </div>
+                <div class="col-2  ">
+                    <label class="form-label"  for="sortby">Sort by</label>
+                    <select class="form-select" id="sortby" name="selectedSortBy">
+                        <option value default disabled hidden selected>Default</option>
+                        <option value="low to high" <%  if(selectedSortBy == "low to high"){ %>selected <% } %>>Low to High</option>
+                        <option value="high to low" <%  if(selectedSortBy == "high to low"){ %>selected <% } %>>High to Low</option>
+                    </select>
+                </div>
+                <div class="col-1">    
+                    <input class="btn btn-default border" type="submit" value="submit">
+                </div>
+            </form>
+        </div>
+        <div class="col-1">
+            <form action="/reset" method="post">
+                <input hidden name="target_url" value="<%= originUrl %>">
+                <input class="btn btn-secondary" type="submit" value="Reset">
+            </form>
+        </div>
+    </div>
+</div>
